@@ -1,0 +1,433 @@
+
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --page-bg: #f4f7fb;
+    --card-bg: #ffffff;
+    --text-color: #172033;
+    --muted-color: #64748b;
+    --border-color: #e2e8f0;
+    --success-bg: #dcfce7;
+    --success-text: #166534;
+    --error-bg: #fee2e2;
+    --error-text: #991b1b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--page-bg);
+    color: var(--text-color);
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+}
+
+.page-container {
+    width: min(1200px, 94%);
+    margin: 0 auto;
+    padding: 28px 0 40px;
+}
+
+/* Header */
+.page-header {
+    margin-bottom: 28px;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: clamp(26px, 4vw, 36px);
+    letter-spacing: -0.5px;
+    line-height: 1.25;
+}
+
+.subtitle {
+    margin: 9px 0 0;
+    color: var(--muted-color);
+    line-height: 1.6;
+}
+
+/* Dashboard KPI cards */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    min-width: 0;
+    padding: 22px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+
+.stat-label {
+    margin-bottom: 12px;
+    color: var(--muted-color);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.stat-value {
+    font-size: clamp(23px, 2.5vw, 32px);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+    line-height: 1.25;
+}
+
+/* Main sections */
+.section-card {
+    margin-bottom: 24px;
+    padding: 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.section-card h2 {
+    margin: 0 0 16px;
+    font-size: 21px;
+    line-height: 1.4;
+}
+
+.section-description {
+    margin: -6px 0 20px;
+    color: var(--muted-color);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.section-heading h2 {
+    margin: 0;
+}
+
+/* Buttons and links */
+.primary-button,
+.export-button {
+    display: inline-block;
+    padding: 11px 17px;
+    background: var(--primary);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.primary-button:hover,
+.export-button:hover {
+    background: var(--primary-hover);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+/* Upload form */
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.upload-form label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.upload-form input[type="file"] {
+    width: 100%;
+    max-width: 520px;
+    padding: 12px;
+    background: #ffffff;
+    border: 1px dashed #94a3b8;
+    border-radius: 8px;
+    color: var(--text-color);
+    font: inherit;
+    font-size: 13px;
+}
+
+.helper-text {
+    margin: -5px 0 0;
+    color: var(--muted-color);
+    font-size: 12px;
+}
+
+/* Alerts */
+.alert {
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.alert-error {
+    background: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid #fecaca;
+}
+
+.alert-success {
+    background: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid #bbf7d0;
+}
+
+/* Seven-day activity histogram */
+.histogram {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    gap: 12px;
+    min-height: 245px;
+    padding: 18px 8px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.histogram-column {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+}
+
+.histogram-value {
+    min-height: 17px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.histogram-bar-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: min(44px, 75%);
+    height: 145px;
+    background: linear-gradient(
+        to top,
+        transparent 49.5%,
+        #e9edf5 50%,
+        transparent 50.5%
+    );
+}
+
+.histogram-bar {
+    width: 100%;
+    min-height: 0;
+    background: var(--primary);
+    border-radius: 6px 6px 0 0;
+    transition: height 0.3s ease, background 0.2s ease;
+}
+
+.histogram-bar:hover {
+    background: var(--primary-hover);
+}
+
+.histogram-date {
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.histogram-faces {
+    margin: 5px 0 12px;
+    color: var(--muted-color);
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+/* Data tables */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+}
+
+table {
+    width: 100%;
+    min-width: 550px;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+    vertical-align: middle;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+th {
+    background: #eff4ff;
+    color: #1e40af;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background: #f8faff;
+}
+
+.status-success {
+    color: #15803d;
+    font-weight: 600;
+}
+
+.timestamp-cell {
+    min-width: 190px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.empty-state {
+    padding: 22px 12px;
+    color: var(--muted-color);
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Detection results */
+.result-summary {
+    margin: 16px 0;
+    padding: 15px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    color: #1e40af;
+}
+
+.result-image {
+    display: block;
+    width: 100%;
+    max-width: 850px;
+    max-height: 650px;
+    height: auto;
+    margin: 20px auto;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+.note-text {
+    margin-top: 16px;
+    color: var(--muted-color);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* Footer */
+.page-footer {
+    padding: 16px;
+    color: var(--muted-color);
+    text-align: center;
+    font-size: 12px;
+}
+
+/* Tablet */
+@media (max-width: 850px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .page-container {
+        width: 92%;
+        padding-top: 20px;
+    }
+
+    .stats-grid {
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .stat-value {
+        font-size: 23px;
+    }
+
+    .section-card {
+        padding: 17px;
+    }
+
+    .histogram {
+        gap: 4px;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .histogram-bar-container {
+        width: 70%;
+        height: 115px;
+    }
+
+    .histogram-date {
+        font-size: 10px;
+    }
+
+    .histogram-faces {
+        font-size: 9px;
+    }
+
+    .export-button {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    th,
+    td {
+        padding: 12px 10px;
+    }
+}
+
+
+
+

@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Face Detection Studio with image analysis, confidence scores, and detection history.">
+    <title>Face Detection Studio</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+<main class="page-container">
+
+    <header class="page-header">
+        <h1>Face Detection Studio</h1>
+        <p class="subtitle">
+            Intelligent face detection, confidence analysis, and detection history.
+        </p>
+    </header>
+
+    {% if error %}
+    <div class="alert alert-error" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <!-- Dashboard KPI cards -->
+    <section class="stats-grid" aria-label="Dashboard summary">
+
+        <article class="stat-card">
+            <div class="stat-label">Images Processed</div>
+            <div class="stat-value">{{ stats.total_images | default(0) }}</div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-label">Faces Detected</div>
+            <div class="stat-value">{{ stats.total_faces | default(0) }}</div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-label">Images Without Faces</div>
+            <div class="stat-value">{{ stats.images_without_faces | default(0) }}</div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-label">Average Confidence</div>
+            <div class="stat-value">
+                {% if stats.average_confidence is not none %}
+                    {{ "%.1f" | format(stats.average_confidence) }}%
+                {% else %}
+                    N/A
+                {% endif %}
+            </div>
+        </article>
+
+    </section>
+
+    <!-- Seven-day activity histogram -->
+    <section class="section-card">
+        <h2>7-Day Detection Activity</h2>
+        <p class="section-description">
+            Daily image processing and face detection activity.
+        </p>
+
+        {% if activity %}
+            {% set max_images = namespace(value=0) %}
+
+            {% for day in activity %}
+                {% if day.images > max_images.value %}
+                    {% set max_images.value = day.images %}
+                {% endif %}
+            {% endfor %}
+
+            <div class="histogram">
+                {% for day in activity %}
+                    <div class="histogram-column">
+
+                        <div class="histogram-value">
+                            {{ day.images }}
+                        </div>
+
+                        <div class="histogram-bar-container">
+                            <div
+                                class="histogram-bar"
+                                style="height: {% if max_images.value > 0 %}{{ (day.images / max_images.value * 100) | round(1) }}{% else %}0{% endif %}%;"
+                                title="{{ day.images }} images, {{ day.faces }} faces"
+                            ></div>
+                        </div>
+
+                        <div class="histogram-date">{{ day.label }}</div>
+                        <div class="histogram-faces">{{ day.faces }} faces</div>
+
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-state">No activity data available yet.</p>
+        {% endif %}
+    </section>
+
+    <!-- Image upload -->
+    <section class="section-card">
+        <h2>Upload an Image</h2>
+
+        <p class="section-description">
+            Upload a photo to detect faces using the OpenCV YuNet model.
+        </p>
+
+        <form
+            class="upload-form"
+            action="{{ url_for('detect') }}"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+            <label for="image">Choose an image</label>
+
+            <input
+                type="file"
+                id="image"
+                name="image"
+                accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                required
+            >
+
+            <p class="helper-text">
+                Supported formats: JPG, JPEG, PNG, WEBP. Maximum size: 5 MB.
+                Video and document files are not supported.
+            </p>
+
+            <button type="submit" class="primary-button">
+                Detect Faces
+            </button>
+        </form>
+    </section>
+
+    <!-- Detection results -->
+    {% if result_image %}
+    <section class="section-card">
+        <h2>Detection Results</h2>
+
+        <div class="alert alert-success" role="status">
+            Image processed successfully.
+        </div>
+
+        <div class="result-summary">
+            <strong>Faces detected:</strong> {{ face_count | default(0) }}
+        </div>
+
+        <img
+            class="result-image"
+            src="data:image/jpeg;base64,{{ result_image }}"
+            alt="Processed image with detected faces highlighted"
+        >
+
+        <h3>Detected Face Details</h3>
+
+        {% if face_results %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Face ID</th>
+                        <th>Confidence Score</th>
+                        <th>Timestamp (IST)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for face in face_results %}
+                    <tr>
+                        <td>{{ face.face_id }}</td>
+                        <td>{{ "%.1f" | format(face.confidence * 100) }}%</td>
+                        <td class="timestamp-cell">{{ face.timestamp }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="empty-state">No faces were detected in this image.</p>
+        {% endif %}
+
+        <p class="note-text">
+            Face IDs identify individual detection records. They do not
+            recognize or track the same person across different images.
+        </p>
+    </section>
+    {% endif %}
+
+    <!-- Image detection history -->
+    <section class="section-card">
+        <div class="section-heading">
+            <h2>Image Detection History</h2>
+
+            <a href="{{ url_for('export_history') }}" class="export-button">
+                Export History CSV
+            </a>
+        </div>
+
+        {% if history %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Record ID</th>
+                        <th>Timestamp (IST)</th>
+                        <th>Faces Detected</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in history %}
+                    <tr>
+                        <td>{{ record.id }}</td>
+                        <td class="timestamp-cell">{{ record.timestamp }}</td>
+                        <td>{{ record.face_count }}</td>
+                        <td class="status-success">{{ record.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="empty-state">
+            No image detection history yet. Upload an image to get started.
+        </p>
+        {% endif %}
+    </section>
+
+    <!-- Recent individual face records -->
+    <section class="section-card">
+        <h2>Recent Detected Faces</h2>
+
+        {% if detected_faces %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Face ID</th>
+                        <th>Timestamp (IST)</th>
+                        <th>Confidence Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for face in detected_faces %}
+                    <tr>
+                        <td>{{ face.face_id }}</td>
+                        <td class="timestamp-cell">{{ face.timestamp }}</td>
+                        <td>{{ "%.1f" | format(face.confidence * 100) }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="empty-state">
+            No individual face records are available yet.
+        </p>
+        {% endif %}
+
+        <p class="note-text">
+            Confidence scores indicate the model's confidence in each detection,
+            not the identity of the person.
+        </p>
+    </section>
+
+    <footer class="page-footer">
+        Face Detection Studio · Python · Flask · OpenCV · SQLite
+    </footer>
+
+</main>
+</body>
+</html>
