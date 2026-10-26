@@ -1,18 +1,18 @@
-# Face Detection Studio
+﻿# Face Detection Studio
 
-A web-based face detection application built with Python, Flask, OpenCV, and SQLite. The application detects faces in uploaded images, displays confidence scores, and maintains a history of detection activity.
+A web-based face detection application built with Python, Flask, OpenCV, and SQLite. Face Detection Studio detects faces in uploaded images, displays bounding boxes and confidence scores, and maintains a history of detection activity through an interactive dashboard.
 
 ## Features
 
 - **Face Detection:** Detect faces in uploaded images using OpenCV's YuNet model.
 - **Visual Results:** Display detected faces with bounding boxes and confidence scores.
-- **Unique Face IDs:** Assign IDs to individual detection records.
+- **Unique Face IDs:** Assign unique IDs to individual face detection records.
 - **Detection History:** Store image-processing and face-detection records in SQLite.
-- **Dashboard Analytics:** Display image counts, detected faces, average confidence, and seven-day activity.
+- **Dashboard Analytics:** Display total images processed, detected faces, average confidence, and seven-day activity.
 - **CSV Export:** Export detection history for further analysis.
 - **Input Validation:** Validate supported image formats and reject invalid or oversized uploads.
 - **Timestamp Formatting:** Display detection timestamps in Indian Standard Time (IST).
-
+- **Automated Testing:** Use pytest to run automated application tests.
 
 ## Technologies Used
 
@@ -21,26 +21,30 @@ A web-based face detection application built with Python, Flask, OpenCV, and SQL
 - OpenCV
 - NumPy
 - SQLite
-- HTML5 and CSS3
+- HTML5
+- CSS3
 - YuNet Face Detection Model
 - pytest
+- Gunicorn (production deployment)
 
 ## Project Structure
 
 ```text
 face-detection-web-app/
-├── app.py
-├── database.py
-├── test_app.py
-├── requirements.txt
-├── face_detection_yunet_2023mar.onnx
-├── templates/
-│   └── index.html
-├── static/
-│   └── style.css
-├── .gitignore
-└── README.md
+Γö£ΓöÇΓöÇ app.py
+Γö£ΓöÇΓöÇ database.py
+Γö£ΓöÇΓöÇ test_app.py
+Γö£ΓöÇΓöÇ requirements.txt
+Γö£ΓöÇΓöÇ face_detection_yunet_2023mar.onnx
+Γö£ΓöÇΓöÇ templates/
+Γöé   ΓööΓöÇΓöÇ index.html
+Γö£ΓöÇΓöÇ static/
+Γöé   ΓööΓöÇΓöÇ style.css
+Γö£ΓöÇΓöÇ .gitignore
+ΓööΓöÇΓöÇ README.md
 ```
+
+The SQLite database file, `detection_history.db`, is created locally when the application initializes the database.
 
 ## Requirements
 
@@ -64,7 +68,7 @@ cd face-detection-web-app
 python -m venv .venv
 ```
 
-Activate it in Windows PowerShell:
+Activate the environment on Windows PowerShell:
 
 ```powershell
 .venv\Scripts\Activate.ps1
@@ -76,16 +80,15 @@ Activate it in Windows PowerShell:
 python -m pip install -r requirements.txt
 ```
 
-### 4. Run the application
+### 4. Run the application locally
 
 ```bash
 python app.py
 ```
 
-Open your browser at:
+Open the following address in your browser:
 
 http://127.0.0.1:5000/
-
 
 ## Usage
 
@@ -94,11 +97,11 @@ http://127.0.0.1:5000/
 3. Run face detection.
 4. Review the annotated image and confidence scores.
 5. View detection history and dashboard analytics.
-6. Export the history as a CSV file.
+6. Export detection history as a CSV file.
 
 ## Testing
 
-Run the automated tests:
+Run the automated tests using:
 
 ```bash
 python -m pytest -v
@@ -109,36 +112,41 @@ The project previously passed six automated tests in the development environment
 ## Limitations
 
 - The application detects faces; it does not identify individuals.
-- Face IDs represent detection records and do not track the same person across images.
-- Results depend on image quality, lighting, face size, and model limitations.
-- The current version is designed for local execution.
-- Detection history is stored in SQLite.
+- Face IDs represent individual detection records and do not track the same person across different images.
+- Detection results depend on image quality, lighting, face size, and model limitations.
+- The application uses SQLite for detection history.
+- The local version is intended for development and demonstration purposes.
 
 ## Security and Privacy
 
-- Avoid uploading sensitive images to a public demonstration.
-- Review file validation and data handling before deployment.
+- Validate uploaded files before processing them.
+- Avoid uploading sensitive or confidential images to a public demonstration.
 - Disable Flask debug mode in production.
-- Configure persistent storage if detection history must survive hosting restarts or redeployments.
+- Configure appropriate storage and data-retention policies before public deployment.
+- Use persistent storage if detection history must survive hosting restarts or redeployments.
+- Do not assume that files stored on a free hosting service will persist indefinitely.
 
 ## Model Attribution
 
-This project uses the YuNet face detection model distributed through the OpenCV Zoo project.
+This project uses the YuNet face detection model distributed through OpenCV Zoo.
 
-Model documentation: [OpenCV Zoo — YuNet](https://github.com/opencv/opencv_zoo/tree/main/models/face_detection_yunet)
+- **Model file:** `face_detection_yunet_2023mar.onnx`
+- **Model source:** [OpenCV Zoo ΓÇö YuNet](https://github.com/opencv/opencv_zoo/tree/main/models/face_detection_yunet)
 
-Review the model's applicable licence and attribution requirements before redistributing the model file. The model licence does not automatically determine the licence for this application's code.
+Refer to the model directory's licence and attribution requirements when using or redistributing the model.
 
 ## Future Improvements
 
 - Add application screenshots and a live demo.
 - Improve automated test coverage.
 - Add pagination and search for detection history.
-- Configure production hosting and persistent database storage.
+- Improve deployment configuration and persistent database storage.
+- Enhance the dashboard with additional analytics.
 
 ## Author
 
 **Sukanya Burman**
 
-- GitHub: [@SukanyaBurman](https://github.com/SukanyaBurman)
-- Repository: [Face Detection Studio](https://github.com/SukanyaBurman/face-detection-web-app)
+GitHub: [SukanyaBurman](https://github.com/SukanyaBurman)
+
+Project Repository: [Face Detection Studio](https://github.com/SukanyaBurman/face-detection-web-app)
