@@ -1,4 +1,7 @@
-﻿# Face Detection Studio
+# Face Detection Studio
+
+**Live Demo:** https://face-detection-web-app-pid7.onrender.com
+
 
 A web-based face detection application built with Python, Flask, OpenCV, and SQLite. Face Detection Studio detects faces in uploaded images, displays bounding boxes and confidence scores, and maintains a history of detection activity through an interactive dashboard.
 
