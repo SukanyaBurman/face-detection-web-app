@@ -31,17 +31,17 @@ A web-based face detection application built with Python, Flask, OpenCV, and SQL
 
 ```text
 face-detection-web-app/
-Γö£ΓöÇΓöÇ app.py
-Γö£ΓöÇΓöÇ database.py
-Γö£ΓöÇΓöÇ test_app.py
-Γö£ΓöÇΓöÇ requirements.txt
-Γö£ΓöÇΓöÇ face_detection_yunet_2023mar.onnx
-Γö£ΓöÇΓöÇ templates/
-Γöé   ΓööΓöÇΓöÇ index.html
-Γö£ΓöÇΓöÇ static/
-Γöé   ΓööΓöÇΓöÇ style.css
-Γö£ΓöÇΓöÇ .gitignore
-ΓööΓöÇΓöÇ README.md
+|-- app.py
+|-- database.py
+|-- test_app.py
+|-- requirements.txt
+|-- face_detection_yunet_2023mar.onnx
+|-- templates/
+|   `-- index.html
+|-- static/
+|   `-- style.css
+|-- .gitignore
+`-- README.md
 ```
 
 The SQLite database file, `detection_history.db`, is created locally when the application initializes the database.
